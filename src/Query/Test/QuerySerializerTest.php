@@ -6,6 +6,7 @@ use CuyZ\Valinor\MapperBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use YuiEzic\ValinorOpenapiSerializer\Query\QuerySerializer;
+use YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject\DeepObject;
 use YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject\Form;
 use YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject\PipeDelimited;
 use YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject\SpaceDelimited;
@@ -102,6 +103,22 @@ class QuerySerializerTest extends TestCase
                 'allowReserved' => true,
                 'expected' => implode('&', [
                     'stringList=' . 'first' . '|' . 'second',
+                ]),
+            ],
+            'DeepObject, explode, no allow reserved' => [
+                'query' => DeepObject\Explode::class,
+                'allowReserved' => false,
+                'expected' => implode('&', [
+                    'explode[id]=1',
+                    'explode[value]=foo',
+                ]),
+            ],
+            'DeepObject, explode, allow reserved' => [
+                'query' => DeepObject\Explode::class,
+                'allowReserved' => true,
+                'expected' => implode('&', [
+                    'explode[id]=1',
+                    'explode[value]=foo',
                 ]),
             ],
         ];
