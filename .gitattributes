@@ -13,3 +13,5 @@ rector.php         export-ignore
 CHANGELOG.md       export-ignore
 CONTRIBUTING.md    export-ignore
 README.md          export-ignore
+
+/src/Query/Test    export-ignore
