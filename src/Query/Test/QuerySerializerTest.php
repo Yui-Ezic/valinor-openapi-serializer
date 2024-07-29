@@ -7,6 +7,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use YuiEzic\ValinorOpenapiSerializer\Query\QuerySerializer;
 use YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject\Form;
+use YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject\PipeDelimited;
 use YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject\SpaceDelimited;
 use YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject\StringValue;
 
@@ -87,6 +88,20 @@ class QuerySerializerTest extends TestCase
                 'allowReserved' => true,
                 'expected' => implode('&', [
                     'stringList=' . 'first' . '%20' . 'second',
+                ]),
+            ],
+            'PipeDelimited, no explode, no allow reserved' => [
+                'query' => PipeDelimited\NoExplode::class,
+                'allowReserved' => false,
+                'expected' => implode('&', [
+                    'stringList=' . 'first' . '|' . 'second',
+                ]),
+            ],
+            'PipeDelimited, no explode, allow reserved' => [
+                'query' => PipeDelimited\NoExplode::class,
+                'allowReserved' => true,
+                'expected' => implode('&', [
+                    'stringList=' . 'first' . '|' . 'second',
                 ]),
             ],
         ];
