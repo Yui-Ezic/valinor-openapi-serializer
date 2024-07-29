@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Query\SpaceDelimited;
+namespace YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject\SpaceDelimited;
 
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\SpaceDelimited\ArrayNoExplode;
 

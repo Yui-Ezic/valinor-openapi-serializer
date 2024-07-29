@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Query;
+namespace YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject;
 
 readonly class StringValue
 {

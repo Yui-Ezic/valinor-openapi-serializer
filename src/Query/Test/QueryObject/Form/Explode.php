@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Query\Form;
+namespace YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject\Form;
 
-use Tests\Query\NestedObject;
+use YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject\NestedObject;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\ArrayExplode;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\Form\ObjectExplode;
 
