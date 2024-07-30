@@ -5,6 +5,13 @@ namespace YuiEzic\ValinorOpenapiSerializer\Query\Transformer\Form;
 use Attribute;
 use CuyZ\Valinor\Normalizer\AsTransformer;
 
+/**
+ * Transformer for plain object property with style=form, explode=false.
+ * Converts Object id = {"role": "admin", "firstName": "Alex"}
+ * to ?id=role,admin,firstName,Alex
+ *
+ * @see https://swagger.io/docs/specification/serialization/
+ */
 #[AsTransformer]
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class ObjectNoExplode

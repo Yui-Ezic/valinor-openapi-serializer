@@ -9,6 +9,12 @@ use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\ExplodeValues;
 /**
  * THIS TRANSFORMER MUST WORK IN TANDEM WITH YuiEzic\ValinorOpenapiSerializer\QuerySerializer\Transformer\ExplodeValues
  * TODO: find other method to do object explode, without YuiEzic\ValinorOpenapiSerializer\QuerySerializer\Transformer\ExplodeValues
+ *
+ * Transformer for plain object property with style=form, explode=true.
+ * Converts Object id = {"role": "admin", "firstName": "Alex"}
+ * to ?role=admin&firstName=Alex
+ *
+ * @see https://swagger.io/docs/specification/serialization/
  */
 #[AsTransformer]
 #[Attribute(Attribute::TARGET_PROPERTY)]

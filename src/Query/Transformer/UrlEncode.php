@@ -2,11 +2,19 @@
 
 namespace YuiEzic\ValinorOpenapiSerializer\Query\Transformer;
 
+/**
+ * Encodes values for url by RFC 3986
+ */
 readonly class UrlEncode
 {
     private const string RESERVED = "/?#[]@!$&'()*+,;=";
 
-    public function __construct(private bool $allowReserved = false)
+    public function __construct(
+        /**
+         * If true preserves reserved characters from encoding
+         */
+        private bool $allowReserved = false
+    )
     {
     }
 

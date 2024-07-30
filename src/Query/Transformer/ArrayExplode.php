@@ -6,7 +6,8 @@ use Attribute;
 use CuyZ\Valinor\Normalizer\AsTransformer;
 
 /**
- * Array serialization with explode exactly same for all styles, so this class on general namespace
+ * Array serialization with explode=true is exactly same for all styles, so this class on general namespace
+ *
  * @see https://swagger.io/docs/specification/serialization/
  */
 #[AsTransformer]
@@ -38,6 +39,5 @@ readonly class ArrayExplode
         }
 
         return $result;
-
     }
 }

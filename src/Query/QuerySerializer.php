@@ -7,6 +7,11 @@ use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\UrlEncode;
 use CuyZ\Valinor\MapperBuilder;
 use CuyZ\Valinor\Normalizer\Format;
 
+/**
+ * Serializing query object to string as defined in openapi specification.
+ *
+ * @see https://swagger.io/docs/specification/serialization/
+ */
 final readonly class QuerySerializer
 {
     public function serialize(object $query, bool $allowReserved = false): string
