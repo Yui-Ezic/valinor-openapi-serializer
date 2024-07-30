@@ -16,15 +16,21 @@ final readonly class QuerySerializer
 {
     public function serialize(object $query, bool $allowReserved = false): string
     {
-        $mapperBuilder = new MapperBuilder();
-
-        $mapperBuilder = $mapperBuilder
+        $mapperBuilder = (new MapperBuilder())
             ->registerTransformer(new UrlEncode($allowReserved))
             // For ObjectExplode attribute
             ->registerTransformer(new ExplodeValues());
 
         $array = $mapperBuilder->normalizer(Format::array())->normalize($query);
 
+        return self::toQueryString($array);
+    }
+
+    /**
+     * @param string[] $array
+     */
+    private static function toQueryString(array $array): string
+    {
         $arrayForImplode = [];
         foreach ($array as $key => $value) {
             $arrayForImplode[$key] = $key . '=' . $value;
