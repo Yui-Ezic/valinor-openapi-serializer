@@ -1,6 +1,6 @@
 # Valinor openapi serializer
 
-Serialize/Deserialize parameters to/from objects by openapi specification with valinor
+Serialize/Deserialize parameters from/to objects by openapi specification with valinor
 
 
 ## Example of query params serialization
