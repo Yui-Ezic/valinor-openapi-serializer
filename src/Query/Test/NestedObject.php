@@ -1,6 +1,6 @@
 <?php
 
-namespace YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject;
+namespace YuiEzic\ValinorOpenapiSerializer\Query\Test;
 
 readonly class NestedObject
 {

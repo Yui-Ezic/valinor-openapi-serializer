@@ -1,155 +1,213 @@
 <?php
 
+declare(strict_types=1);
+
 namespace YuiEzic\ValinorOpenapiSerializer\Query\Test;
 
-use CuyZ\Valinor\MapperBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use YuiEzic\ValinorOpenapiSerializer\Query\QuerySerializer;
-use YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject\DeepObject;
-use YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject\Form;
-use YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject\PipeDelimited;
-use YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject\SpaceDelimited;
-use YuiEzic\ValinorOpenapiSerializer\Query\Test\QueryObject\StringValue;
+use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\ArrayExplode;
+use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\DeepObject\ObjectExplode;
+use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\Form;
+use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\PipeDelimited;
+use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\SpaceDelimited;
 
 class QuerySerializerTest extends TestCase
 {
     public static function dataProvider(): array
     {
+        // RFC3986 char sets
         $reserved = "/?#[]@!$&'()*+,;=";
-        $shouldBeEncoded = ' |^ёі';
+        $disallowed = ' |^ёі';
         $unreserved = '-._~' . 'Ab09';
 
         return [
-            'allowReserved=true encode everything except reserved' => [
-                'query' => new StringValue($unreserved . $reserved . $shouldBeEncoded),
+            // Test reserved chars encoding
+            'allowReserved=true does not encode reserved' => [
+                'query' => self::stringQueryObject($reserved),
                 'allowReserved' => true,
-                'expected' => 'value=' . $unreserved . $reserved . rawurlencode($shouldBeEncoded)
+                'expected' => 'value=' . $reserved
             ],
-            'allowReserved=false encode everything' => [
-                'query' => new StringValue($unreserved . $reserved . $shouldBeEncoded),
+            'allowReserved=false encodes reserved' => [
+                'query' => self::stringQueryObject($reserved),
                 'allowReserved' => false,
-                'expected' => 'value=' . $unreserved . rawurlencode($reserved . $shouldBeEncoded)
+                'expected' => 'value=' . rawurlencode($reserved)
             ],
-            'Form, explode, no allow reserved' => [
-                'query' => Form\Explode::class,
-                'allowReserved' => false,
-                'expected' => implode('&', [
-                    'int=3',
-                    'float=3.14',
-                    'string=' . 'hello' . '%20' . 'world',
-                    'stringList=first&stringList=second',
-                    'id=1',
-                    'value=foo'
-                ]),
-            ],
-            'Form, explode, allow reserved' => [
-                'query' => Form\Explode::class,
+
+            // Test disallowed chars encoding
+            'allowReserved=true encodes not reserved disallowed chars' => [
+                'query' => self::stringQueryObject($disallowed),
                 'allowReserved' => true,
-                'expected' => implode('&', [
-                    'int=3',
-                    'float=3.14',
-                    'string=' . 'hello' . '%20' . 'world',
-                    'stringList=first&stringList=second',
-                    'id=1',
-                    'value=foo'
-                ]),
+                'expected' => 'value=' . rawurlencode($disallowed)
             ],
-            'Form, no explode, no allow reserved' => [
-                'query' => Form\NoExplode::class,
+            'allowReserved=false encodes not reserved disallowed chars' => [
+                'query' => self::stringQueryObject($disallowed),
                 'allowReserved' => false,
-                'expected' => implode('&', [
-                    'int=3',
-                    'float=3.14',
-                    'string=' . 'hello' . '%20' . 'world',
-                    'stringList=first,second',
-                    'nestedObject=id,1,value,foo',
-                ]),
+                'expected' => 'value=' . rawurlencode($disallowed)
             ],
-            'Form, no explode, allow reserved' => [
-                'query' => Form\NoExplode::class,
+
+            // Test unreserved chars encoding
+            'allowReserved=true does not encode unreserved' => [
+                'query' => self::stringQueryObject($unreserved),
                 'allowReserved' => true,
-                'expected' => implode('&', [
-                    'int=3',
-                    'float=3.14',
-                    'string=' . 'hello' . '%20' . 'world',
-                    'stringList=first,second',
-                    'nestedObject=id,1,value,foo',
-                ]),
+                'expected' => 'value=' . $unreserved
             ],
-            'SpaceDelimited, no explode, no allow reserved' => [
-                'query' => SpaceDelimited\NoExplode::class,
+            'allowReserved=false does not encode unreserved' => [
+                'query' => self::stringQueryObject($unreserved),
                 'allowReserved' => false,
-                'expected' => implode('&', [
-                    'stringList=' . 'first' . '%20' . 'second',
-                ]),
+                'expected' => 'value=' . $unreserved
             ],
-            'SpaceDelimited, no explode, allow reserved' => [
-                'query' => SpaceDelimited\NoExplode::class,
-                'allowReserved' => true,
-                'expected' => implode('&', [
-                    'stringList=' . 'first' . '%20' . 'second',
-                ]),
-            ],
-            'PipeDelimited, no explode, no allow reserved' => [
-                'query' => PipeDelimited\NoExplode::class,
+
+            // Test simple types serializing
+            'int' => [
+                'query' => self::intQueryObject(3),
                 'allowReserved' => false,
-                'expected' => implode('&', [
-                    'stringList=' . 'first' . '|' . 'second',
-                ]),
+                'expected' => 'value=3',
             ],
-            'PipeDelimited, no explode, allow reserved' => [
-                'query' => PipeDelimited\NoExplode::class,
-                'allowReserved' => true,
-                'expected' => implode('&', [
-                    'stringList=' . 'first' . '|' . 'second',
-                ]),
-            ],
-            'DeepObject, explode, no allow reserved' => [
-                'query' => DeepObject\Explode::class,
+            'float' => [
+                'query' => self::floatQueryObject(3.14),
                 'allowReserved' => false,
-                'expected' => implode('&', [
-                    'explode[id]=1',
-                    'explode[value]=foo',
-                ]),
+                'expected' => 'value=3.14',
             ],
-            'DeepObject, explode, allow reserved' => [
-                'query' => DeepObject\Explode::class,
-                'allowReserved' => true,
-                'expected' => implode('&', [
-                    'explode[id]=1',
-                    'explode[value]=foo',
-                ]),
+
+            // Array explode serializing test, it's same for all serializing styles
+            'array, explode, no allow reserved' => [
+                'query' => new class (['first', 'second']) {
+                    public function __construct(
+                        /** @var list<string> */
+                        #[ArrayExplode('value')]
+                        public array $value,
+                    )
+                    {
+                    }
+                },
+                'allowReserved' => false,
+                'expected' => 'value=first&value=second'
+            ],
+
+            // Form style array serializing
+            'array, Form, no explode, no allow reserved' => [
+                'query' => new class (['first', 'second']) {
+                    public function __construct(
+                        /** @var list<string> */
+                        #[Form\ArrayNoExplode()]
+                        public array $value,
+                    )
+                    {
+                    }
+                },
+                'allowReserved' => false,
+                'expected' => 'value=first,second'
+            ],
+
+            // Form style object serializing
+            'object, Form, explode, no allow reserved' => [
+                'query' => new class (new NestedObject(id: 1, value: 'foo')) {
+                    public function __construct(
+                        #[Form\ObjectExplode]
+                        public NestedObject $object
+                    )
+                    {
+                    }
+                },
+                'allowReserved' => false,
+                'expected' => 'id=1&value=foo'
+            ],
+            'object, Form, no explode, no allow reserved' => [
+                'query' => new class (new NestedObject(id: 1, value: 'foo')) {
+                    public function __construct(
+                        #[Form\ObjectNoExplode]
+                        public NestedObject $object
+                    )
+                    {
+                    }
+                },
+                'allowReserved' => false,
+                'expected' => 'object=id,1,value,foo',
+            ],
+
+            // SpaceDelimited style array serialization
+            'array, SpaceDelimited, no explode, no allow reserved' => [
+                'query' => new class (['first', 'second']) {
+                    public function __construct(
+                        /** @var list<string> */
+                        #[SpaceDelimited\ArrayNoExplode]
+                        public array $value,
+                    )
+                    {
+                    }
+                },
+                'allowReserved' => false,
+                'expected' => 'value=first' . '%20' . 'second'
+            ],
+
+            // PipeDelimited style array serialization
+            'array, PipeDelimited, no explode, no allow reserved' => [
+                'query' => new class (['first', 'second']) {
+                    public function __construct(
+                        /** @var list<string> */
+                        #[PipeDelimited\ArrayNoExplode]
+                        public array $value,
+                    )
+                    {
+                    }
+                },
+                'allowReserved' => false,
+                'expected' => 'value=first|second',
+            ],
+
+            // DeepObject style object serialization
+            'object, DeepObject, explode, no allow reserved' => [
+                'query' => new class (new NestedObject(id: 1, value: 'foo')) {
+                    public function __construct(
+                        #[ObjectExplode(objectName: 'object')]
+                        public NestedObject $object,
+                    )
+                    {
+                    }
+                },
+                'allowReserved' => false,
+                'expected' => 'object[id]=1' . '&' . 'object[value]=foo',
             ],
         ];
     }
 
     #[DataProvider('dataProvider')]
-    public function testSerialize(string|object $query, bool $allowReserved, string $expected): void
+    public function testSerialize(object $query, bool $allowReserved, string $expected): void
     {
-        if (is_string($query)) {
-            $queryArray = [
-                'int' => 3,
-                'float' => 3.14,
-                'string' => 'hello world',
-                'stringList' => ['first', 'second'],
-                'nestedObject' => [
-                    'id' => 1,
-                    'value' => 'foo'
-                ]
-            ];
-
-            $query = (new MapperBuilder())
-                ->allowSuperfluousKeys()
-                ->mapper()
-                ->map($query, $queryArray);
-        }
-
         $actual = (new QuerySerializer())->serialize(
             query: $query,
             allowReserved: $allowReserved,
         );
 
         self::assertEquals($expected, $actual);
+    }
+
+    private static function stringQueryObject(string $value): object
+    {
+        return new class ($value) {
+            public function __construct(public string $value)
+            {
+            }
+        };
+    }
+
+    private static function intQueryObject(int $value): object
+    {
+        return new class ($value) {
+            public function __construct(public int $value)
+            {
+            }
+        };
+    }
+
+    private static function floatQueryObject(float $value): object
+    {
+        return new class ($value) {
+            public function __construct(public float $value)
+            {
+            }
+        };
     }
 }
