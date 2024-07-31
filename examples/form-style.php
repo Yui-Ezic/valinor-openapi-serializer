@@ -1,17 +1,10 @@
-# Valinor openapi serializer
-
-Serialize/Deserialize parameters to/from objects by openapi specification with valinor
-
-
-## Example of query params serialization
-
-```php
 <?php
 
 use YuiEzic\ValinorOpenapiSerializer\Query\QuerySerializer;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\ArrayExplode;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\Form;
 
+chdir(dirname(__DIR__));
 require 'vendor/autoload.php';
 
 // Php objects that represents params
@@ -27,7 +20,9 @@ readonly class QueryObject
         public array $stringList,
         #[Form\ObjectExplode]
         public NestedObject $nestedObject,
-    ) {}
+    )
+    {
+    }
 }
 
 readonly class NestedObject
@@ -35,7 +30,9 @@ readonly class NestedObject
     public function __construct(
         public int $id,
         public string $value
-    ) {}
+    )
+    {
+    }
 }
 
 // Serialize php object to query string
@@ -52,6 +49,6 @@ $queryString = (new QuerySerializer())->serialize(
 
 // int=3&float=3.14&string=hello%20world&stringList=first&stringList=second&id=1&value=foo
 echo $queryString . PHP_EOL;
-```
 
-For more examples you can check [tests](src/Query/Test/QuerySerializerTest.php)
+
+
