@@ -1,5 +1,8 @@
 init: docker-down-clear docker-pull docker-build docker-up composer-install
 
+fix: fixcs
+analyze: test checkstyle
+
 test:
 	docker-compose run php composer test
 
