@@ -7,19 +7,22 @@ on:
   pull_request: ~
 
 jobs:
-  check:
+  test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ 8.3 ]
+        dependency-versions: [ lowest, highest ]
     steps:
       - uses: actions/checkout@v4
-
-      - name: Cache API composer
-        uses: actions/cache@v2
+      - uses: shivammathur/setup-php@v2
         with:
-          path: vendor
-          key: composer-${{ hashFiles('api/composer.lock') }}
-
-      - name: Init project
-        run: make init
-
-      - name: Run tests
-        run: make test
+          php-version: ${{ matrix.php }}
+          ini-file: development
+          tools: composer:v2
+          coverage: none
+      - uses: ramsey/composer-install@v3
+        with:
+          composer-options: --optimize-autoloader
+          dependency-versions: ${{ matrix.dependency-versions }}
+      - run: composer test -- --order-by=random
