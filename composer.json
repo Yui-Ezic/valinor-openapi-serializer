@@ -33,7 +33,9 @@
         }
     },
     "scripts": {
-        "test": "phpunit --colors=always"
+        "test": "phpunit --colors=always",
+        "fixcs": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -v",
+        "checkstyle": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -v --dry-run --format=checkstyle"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.2"

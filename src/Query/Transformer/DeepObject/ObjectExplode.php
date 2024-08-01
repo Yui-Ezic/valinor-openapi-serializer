@@ -21,10 +21,8 @@ use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\ExplodeValues;
 readonly class ObjectExplode
 {
     public function __construct(
-        private string $objectName
-    )
-    {
-    }
+        private string $objectName,
+    ) {}
 
     /**
      * YuiEzic\ValinorOpenapiSerializer\QuerySerializer\Transformer\ExplodeValues search for EXPLODE_FLAG keys and explode it

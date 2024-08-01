@@ -18,9 +18,7 @@ readonly class ArrayExplode
         // TODO: Stupid hack because idk how to get key value in normalize() method.
         private string $key,
         private string $delimiter = '&',
-    )
-    {
-    }
+    ) {}
 
     /**
      * @param non-empty-list $array

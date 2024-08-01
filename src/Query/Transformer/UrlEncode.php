@@ -13,10 +13,8 @@ readonly class UrlEncode
         /**
          * If true preserves reserved characters from encoding
          */
-        private bool $allowReserved = false
-    )
-    {
-    }
+        private bool $allowReserved = false,
+    ) {}
 
     public function __invoke(string $value, callable $next): string
     {

@@ -27,36 +27,36 @@ class QuerySerializerTest extends TestCase
             'allowReserved=true does not encode reserved' => [
                 'query' => self::stringQueryObject($reserved),
                 'allowReserved' => true,
-                'expected' => 'value=' . $reserved
+                'expected' => 'value=' . $reserved,
             ],
             'allowReserved=false encodes reserved' => [
                 'query' => self::stringQueryObject($reserved),
                 'allowReserved' => false,
-                'expected' => 'value=' . rawurlencode($reserved)
+                'expected' => 'value=' . rawurlencode($reserved),
             ],
 
             // Test disallowed chars encoding
             'allowReserved=true encodes not reserved disallowed chars' => [
                 'query' => self::stringQueryObject($disallowed),
                 'allowReserved' => true,
-                'expected' => 'value=' . rawurlencode($disallowed)
+                'expected' => 'value=' . rawurlencode($disallowed),
             ],
             'allowReserved=false encodes not reserved disallowed chars' => [
                 'query' => self::stringQueryObject($disallowed),
                 'allowReserved' => false,
-                'expected' => 'value=' . rawurlencode($disallowed)
+                'expected' => 'value=' . rawurlencode($disallowed),
             ],
 
             // Test unreserved chars encoding
             'allowReserved=true does not encode unreserved' => [
                 'query' => self::stringQueryObject($unreserved),
                 'allowReserved' => true,
-                'expected' => 'value=' . $unreserved
+                'expected' => 'value=' . $unreserved,
             ],
             'allowReserved=false does not encode unreserved' => [
                 'query' => self::stringQueryObject($unreserved),
                 'allowReserved' => false,
-                'expected' => 'value=' . $unreserved
+                'expected' => 'value=' . $unreserved,
             ],
 
             // Test simple types serializing
@@ -78,12 +78,10 @@ class QuerySerializerTest extends TestCase
                         /** @var list<string> */
                         #[ArrayExplode('value')]
                         public array $value,
-                    )
-                    {
-                    }
+                    ) {}
                 },
                 'allowReserved' => false,
-                'expected' => 'value=first&value=second'
+                'expected' => 'value=first&value=second',
             ],
 
             // Form style array serializing
@@ -93,12 +91,10 @@ class QuerySerializerTest extends TestCase
                         /** @var list<string> */
                         #[Form\ArrayNoExplode()]
                         public array $value,
-                    )
-                    {
-                    }
+                    ) {}
                 },
                 'allowReserved' => false,
-                'expected' => 'value=first,second'
+                'expected' => 'value=first,second',
             ],
 
             // Form style object serializing
@@ -106,22 +102,18 @@ class QuerySerializerTest extends TestCase
                 'query' => new class (new NestedObject(id: 1, value: 'foo')) {
                     public function __construct(
                         #[Form\ObjectExplode]
-                        public NestedObject $object
-                    )
-                    {
-                    }
+                        public NestedObject $object,
+                    ) {}
                 },
                 'allowReserved' => false,
-                'expected' => 'id=1&value=foo'
+                'expected' => 'id=1&value=foo',
             ],
             'object, Form, no explode, no allow reserved' => [
                 'query' => new class (new NestedObject(id: 1, value: 'foo')) {
                     public function __construct(
                         #[Form\ObjectNoExplode]
-                        public NestedObject $object
-                    )
-                    {
-                    }
+                        public NestedObject $object,
+                    ) {}
                 },
                 'allowReserved' => false,
                 'expected' => 'object=id,1,value,foo',
@@ -134,12 +126,10 @@ class QuerySerializerTest extends TestCase
                         /** @var list<string> */
                         #[SpaceDelimited\ArrayNoExplode]
                         public array $value,
-                    )
-                    {
-                    }
+                    ) {}
                 },
                 'allowReserved' => false,
-                'expected' => 'value=first' . '%20' . 'second'
+                'expected' => 'value=first' . '%20' . 'second',
             ],
 
             // PipeDelimited style array serialization
@@ -149,9 +139,7 @@ class QuerySerializerTest extends TestCase
                         /** @var list<string> */
                         #[PipeDelimited\ArrayNoExplode]
                         public array $value,
-                    )
-                    {
-                    }
+                    ) {}
                 },
                 'allowReserved' => false,
                 'expected' => 'value=first|second',
@@ -163,9 +151,7 @@ class QuerySerializerTest extends TestCase
                     public function __construct(
                         #[ObjectExplode(objectName: 'object')]
                         public NestedObject $object,
-                    )
-                    {
-                    }
+                    ) {}
                 },
                 'allowReserved' => false,
                 'expected' => 'object[id]=1' . '&' . 'object[value]=foo',
@@ -187,27 +173,21 @@ class QuerySerializerTest extends TestCase
     private static function stringQueryObject(string $value): object
     {
         return new class ($value) {
-            public function __construct(public string $value)
-            {
-            }
+            public function __construct(public string $value) {}
         };
     }
 
     private static function intQueryObject(int $value): object
     {
         return new class ($value) {
-            public function __construct(public int $value)
-            {
-            }
+            public function __construct(public int $value) {}
         };
     }
 
     private static function floatQueryObject(float $value): object
     {
         return new class ($value) {
-            public function __construct(public float $value)
-            {
-            }
+            public function __construct(public float $value) {}
         };
     }
 }

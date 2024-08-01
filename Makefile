@@ -3,6 +3,12 @@ init: docker-down-clear docker-pull docker-build docker-up composer-install
 test:
 	docker-compose run php composer test
 
+fixcs:
+	docker-compose run php composer fixcs
+
+checkstyle:
+	docker-compose run php composer checkstyle
+
 docker-up:
 	docker compose up -d
 

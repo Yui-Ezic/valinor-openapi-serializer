@@ -2,8 +2,8 @@
 /.phpunit.cache
 /.php-cs-fixer.cache
 /.php-cs-fixer.php
-/composer.lock
+/**/composer.lock
 /phpunit.xml
-/vendor/
+/**/vendor/
 *.swp
 *.swo
