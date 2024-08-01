@@ -30,7 +30,8 @@
         "preferred-install": "dist",
         "allow-plugins": {
             "pestphp/pest-plugin": true
-        }
+        },
+        "lock": false
     },
     "scripts": {
         "test": "phpunit --colors=always",
