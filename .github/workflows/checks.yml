@@ -1,0 +1,25 @@
+name: Check
+
+on:
+  workflow_dispatch: ~
+  push:
+    branches: ['master']
+  pull_request: ~
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache API composer
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('api/composer.lock') }}
+
+      - name: Init project
+        run: make init
+
+      - name: Run tests
+        run: make test
