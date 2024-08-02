@@ -32,4 +32,6 @@ docker-build:
 
 composer-install:
 	docker-compose run php composer install
+	docker-compose run php composer --working-dir=tools/php-cs-fixer install
+	docker-compose run php composer --working-dir=tools/psalm install
 
