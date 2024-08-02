@@ -1,7 +1,7 @@
 init: docker-down-clear docker-pull docker-build docker-up composer-install
 
 fix: fixcs
-analyze: test checkstyle
+analyze: test checkstyle psalm
 
 test:
 	docker-compose run php composer test
@@ -11,6 +11,9 @@ fixcs:
 
 checkstyle:
 	docker-compose run php composer checkstyle
+
+psalm:
+	docker-compose run php composer psalm
 
 docker-up:
 	docker compose up -d

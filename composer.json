@@ -36,7 +36,8 @@
     "scripts": {
         "test": "phpunit --colors=always",
         "fixcs": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -v",
-        "checkstyle": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -v --dry-run --format=checkstyle"
+        "checkstyle": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -v --dry-run --format=checkstyle",
+        "psalm": "tools/psalm/vendor/bin/psalm --show-info --no-diff --no-cache"
     },
     "require-dev": {
         "phpunit/phpunit": "^11.2"
