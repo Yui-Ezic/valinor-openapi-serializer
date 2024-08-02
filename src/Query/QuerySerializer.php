@@ -2,6 +2,7 @@
 
 namespace YuiEzic\ValinorOpenapiSerializer\Query;
 
+use RuntimeException;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\ExplodeValues;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\UrlEncode;
 use CuyZ\Valinor\MapperBuilder;
@@ -22,6 +23,10 @@ final readonly class QuerySerializer
             ->registerTransformer(new ExplodeValues());
 
         $array = $mapperBuilder->normalizer(Format::array())->normalize($query);
+
+        if (!is_array($array)) {
+            throw new RuntimeException('Invalid query object normalization, result is not an array');
+        }
 
         return self::toQueryString($array);
     }
