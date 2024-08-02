@@ -1,7 +1,10 @@
 {
     "require-dev": {
-        "vimeo/psalm": "^5.25",
+        "vimeo/psalm": "^5.25.0",
         "psalm/plugin-phpunit": "^0.19.0"
+    },
+    "conflict": {
+        "nikic/php-parser": "<4.17"
     },
     "config": {
         "lock": false,
