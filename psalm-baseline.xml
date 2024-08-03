@@ -4,7 +4,8 @@
     <InvalidArgument>
       <!--
         MapperBuilder::registerTransformer expects pure-callable as transformer.
-        But I didn't figure out how to make transformer classes pure-callable
+        But I didn't figure out how to make transformer classes pure-
+        https://github.com/CuyZ/Valinor/issues/550
        -->
       <code><![CDATA[new ExplodeValues()]]></code>
       <code><![CDATA[new UrlEncode($allowReserved)]]></code>
