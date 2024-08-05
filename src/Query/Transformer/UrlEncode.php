@@ -16,6 +16,9 @@ readonly class UrlEncode
         private bool $allowReserved = false,
     ) {}
 
+    /**
+     * @param Closure():string $next
+     */
     public function __invoke(string $value, callable $next): string
     {
         return $this->encode($next());
