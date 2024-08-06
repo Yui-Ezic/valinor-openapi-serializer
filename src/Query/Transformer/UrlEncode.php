@@ -24,7 +24,7 @@ readonly class UrlEncode
         if (!is_string($result)) {
             throw new RuntimeException('Url encode expects a string from upstream transformer.');
         }
-        return $this->encode($next());
+        return $this->encode($result);
     }
 
     private function encode(string $value): string
