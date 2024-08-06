@@ -4,6 +4,8 @@ namespace YuiEzic\ValinorOpenapiSerializer\Query\Transformer\Form;
 
 use Attribute;
 use CuyZ\Valinor\Normalizer\AsTransformer;
+use RuntimeException;
+use Stringable;
 
 /**
  * Transformer for plain object property with style=form, explode=false.
@@ -26,6 +28,9 @@ class ObjectNoExplode
 
         $newValue = '';
         foreach ($result as $key => $value) {
+            if (!is_scalar($value)) {
+                throw new RuntimeException('Query serialization supports only plain objects.');
+            }
             $newValue .= $key . ',' . $value . ',';
         }
         return substr($newValue, 0, -1);

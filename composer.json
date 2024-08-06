@@ -16,7 +16,10 @@
     "autoload": {
         "psr-4": {
             "YuiEzic\\ValinorOpenapiSerializer\\": "src/"
-        }
+        },
+        "files": [
+            "src/functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

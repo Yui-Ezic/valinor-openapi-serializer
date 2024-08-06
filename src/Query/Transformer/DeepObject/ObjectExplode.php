@@ -27,20 +27,28 @@ readonly class ObjectExplode
     /**
      * YuiEzic\ValinorOpenapiSerializer\QuerySerializer\Transformer\ExplodeValues search for EXPLODE_FLAG keys and explode it
      */
-    public function normalizeKey(string $value): string
+    public function normalizeKey(): string
     {
         return ExplodeValues::EXPLODE_FLAG;
     }
 
-    public function normalize(object $object, callable $next): array
+    /**
+     * @psalm-suppress MixedAssignment
+     */
+    public function normalize(object $object, callable $next): mixed
     {
-        $result = [];
-
-        foreach ($next() as $key => $value) {
-            $newKey = $this->objectName . "[$key]";
-            $result[$newKey] = $value;
+        $result = $next();
+        if (!is_array($result)) {
+            return $result;
         }
 
-        return $result;
+        $transformed = [];
+
+        foreach ($result as $key => $value) {
+            $newKey = $this->objectName . "[$key]";
+            $transformed[$newKey] = $value;
+        }
+
+        return $transformed;
     }
 }

@@ -5,6 +5,8 @@ namespace YuiEzic\ValinorOpenapiSerializer\Query\Transformer;
 use Attribute;
 use CuyZ\Valinor\Normalizer\AsTransformer;
 
+use function YuiEzic\ValinorOpenapiSerializer\isArrayOfScalars;
+
 /**
  * Array serialization with explode=true is exactly same for all styles, so this class on general namespace
  *
@@ -23,14 +25,19 @@ readonly class ArrayExplode
     /**
      * @param non-empty-list $array
      */
-    public function normalize(array $array, callable $next): string
+    public function normalize(array $array): array|string
     {
+        // Valinor does not support non-empty-list<scalar> so we need this
+        if(!isArrayOfScalars($array)) {
+            return $array;
+        }
+
         $result = null;
 
-        foreach ($next() as $value) {
+        foreach ($array as $value) {
             if ($result === null) {
                 // Skip key in first value, cause this key will be added by normalizer
-                $result = $value;
+                $result = (string) $value;
             } else {
                 $result .= $this->delimiter . $this->key . '=' . $value;
             }

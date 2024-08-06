@@ -23,7 +23,7 @@ readonly class ObjectExplode
     /**
      * YuiEzic\ValinorOpenapiSerializer\QuerySerializer\Transformer\ExplodeValues search for EXPLODE_FLAG keys and explode it
      */
-    public function normalizeKey(string $value): string
+    public function normalizeKey(): string
     {
         return ExplodeValues::EXPLODE_FLAG;
     }

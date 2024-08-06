@@ -8,6 +8,8 @@ use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\UrlEncode;
 use CuyZ\Valinor\MapperBuilder;
 use CuyZ\Valinor\Normalizer\Format;
 
+use function YuiEzic\ValinorOpenapiSerializer\isArrayOfScalars;
+
 /**
  * Serializing query object to string as defined in openapi specification.
  *
@@ -24,15 +26,15 @@ final readonly class QuerySerializer
 
         $array = $mapperBuilder->normalizer(Format::array())->normalize($query);
 
-        if (!is_array($array)) {
-            throw new RuntimeException('Invalid query object normalization, result is not an array');
+        if (!is_array($array) || !isArrayOfScalars($array)) {
+            throw new RuntimeException('Invalid query object normalization, result is not an scalar array');
         }
 
         return self::toQueryString($array);
     }
 
     /**
-     * @param string[] $array
+     * @param scalar[] $array
      */
     private static function toQueryString(array $array): string
     {

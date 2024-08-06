@@ -53,6 +53,7 @@ class ExplodeValues
     // Begins with '-' because real properties can't start with it
     public const string EXPLODE_FLAG = '-explode';
 
+    /** @psalm-suppress MixedAssignment */
     public function __invoke(object $object, callable $next): mixed
     {
         $result = $next();
@@ -64,6 +65,7 @@ class ExplodeValues
         $transformed = [];
         foreach ($result as $key => $value) {
             if ($key === self::EXPLODE_FLAG) {
+                /** @var array<string,mixed> $value */
                 foreach ($value as $k => $v) {
                     $transformed[$k] = $v;
                 }
