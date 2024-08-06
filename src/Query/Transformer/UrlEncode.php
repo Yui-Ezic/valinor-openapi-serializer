@@ -2,6 +2,8 @@
 
 namespace YuiEzic\ValinorOpenapiSerializer\Query\Transformer;
 
+use RuntimeException;
+
 /**
  * Encodes values for url by RFC 3986
  */
@@ -16,11 +18,12 @@ readonly class UrlEncode
         private bool $allowReserved = false,
     ) {}
 
-    /**
-     * @param Closure():string $next
-     */
     public function __invoke(string $value, callable $next): string
     {
+        $result = $next();
+        if (!is_string($result)) {
+            throw new RuntimeException('Url encode expects a string from upstream transformer.');
+        }
         return $this->encode($next());
     }
 
