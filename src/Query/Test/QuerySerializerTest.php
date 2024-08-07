@@ -7,7 +7,6 @@ namespace YuiEzic\ValinorOpenapiSerializer\Query\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use YuiEzic\ValinorOpenapiSerializer\Query\QuerySerializer;
-use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\ArrayExplode;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\DeepObject\ObjectExplode;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\Form;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\PipeDelimited;
@@ -71,20 +70,18 @@ class QuerySerializerTest extends TestCase
                 'expected' => 'value=3.14',
             ],
 
-            // Array explode serializing test, it's same for all serializing styles
-            'array, explode, no allow reserved' => [
+            // Form style array serializing
+            'array, Form, explode, no allow reserved' => [
                 'query' => new class (['first', 'second']) {
                     public function __construct(
                         /** @var list<string> */
-                        #[ArrayExplode('value')]
+                        #[Form\ArrayExplode('value')]
                         public array $value,
                     ) {}
                 },
                 'allowReserved' => false,
                 'expected' => 'value=first&value=second',
             ],
-
-            // Form style array serializing
             'array, Form, no explode, no allow reserved' => [
                 'query' => new class (['first', 'second']) {
                     public function __construct(
@@ -120,6 +117,17 @@ class QuerySerializerTest extends TestCase
             ],
 
             // SpaceDelimited style array serialization
+            'array, SpaceDelimited, explode, no allow reserved' => [
+                'query' => new class (['first', 'second']) {
+                    public function __construct(
+                        /** @var list<string> */
+                        #[SpaceDelimited\ArrayExplode('value')]
+                        public array $value,
+                    ) {}
+                },
+                'allowReserved' => false,
+                'expected' => 'value=first&value=second',
+            ],
             'array, SpaceDelimited, no explode, no allow reserved' => [
                 'query' => new class (['first', 'second']) {
                     public function __construct(
@@ -133,6 +141,17 @@ class QuerySerializerTest extends TestCase
             ],
 
             // PipeDelimited style array serialization
+            'array, PipeDelimited, explode, no allow reserved' => [
+                'query' => new class (['first', 'second']) {
+                    public function __construct(
+                        /** @var list<string> */
+                        #[PipeDelimited\ArrayExplode('value')]
+                        public array $value,
+                    ) {}
+                },
+                'allowReserved' => false,
+                'expected' => 'value=first&value=second',
+            ],
             'array, PipeDelimited, no explode, no allow reserved' => [
                 'query' => new class (['first', 'second']) {
                     public function __construct(

@@ -2,22 +2,18 @@
 
 namespace YuiEzic\ValinorOpenapiSerializer\Query\Transformer;
 
-use Attribute;
-use CuyZ\Valinor\Normalizer\AsTransformer;
-
 use function YuiEzic\ValinorOpenapiSerializer\isArrayOfScalars;
 
 /**
- * Array serialization with explode=true is exactly same for all styles, so this class on general namespace
+ * Array serialization with explode=true is exactly same for all styles, so abstract class is helpful
  *
  * @see https://swagger.io/docs/specification/serialization/
+ * @internal
  */
-#[AsTransformer]
-#[Attribute(Attribute::TARGET_PROPERTY)]
-readonly class ArrayExplode
+abstract readonly class AbstractArrayExplode
 {
     public function __construct(
-        // TODO: Stupid hack because idk how to get key value in normalize() method.
+        // TODO: Hack because idk how to get 'key' value in normalize() method.
         private string $key,
         private string $delimiter = '&',
     ) {}

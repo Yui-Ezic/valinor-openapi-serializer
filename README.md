@@ -9,7 +9,6 @@ Serialize/Deserialize parameters from/to objects by openapi specification with v
 <?php
 
 use YuiEzic\ValinorOpenapiSerializer\Query\QuerySerializer;
-use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\ArrayExplode;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\Form;
 
 require 'vendor/autoload.php';
@@ -23,7 +22,7 @@ readonly class QueryObject
         public float $float,
         public string $string,
         /** @var list<string> */
-        #[ArrayExplode('stringList')]
+        #[Form\ArrayExplode('stringList')]
         public array $stringList,
         #[Form\ObjectExplode]
         public NestedObject $nestedObject,

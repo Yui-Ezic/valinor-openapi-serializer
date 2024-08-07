@@ -1,7 +1,7 @@
 <?php
 
 use YuiEzic\ValinorOpenapiSerializer\Query\QuerySerializer;
-use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\ArrayExplode;
+use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\AbstractArrayExplode;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\Form;
 
 chdir(dirname(__DIR__));
@@ -16,7 +16,7 @@ readonly class QueryObject
         public float $float,
         public string $string,
         /** @var list<string> */
-        #[ArrayExplode('stringList')]
+        #[AbstractArrayExplode('stringList')]
         public array $stringList,
         #[Form\ObjectExplode]
         public NestedObject $nestedObject,
