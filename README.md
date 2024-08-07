@@ -1,9 +1,31 @@
 # Valinor openapi serializer
 
-Serialize/Deserialize parameters from/to objects by openapi specification with valinor
+Serialize/Deserialize parameters from/to objects
+by [openapi specification](https://swagger.io/docs/specification/serialization/)
+with valinor
 
+## Implemented features
 
-## Example of query params serialization
+| Parameter type | Serialization | Deserialization |
+|----------------|---------------|-----------------|
+| Query          | ✅             | ❌               |
+| Path           | ❌             | ❌               |
+| Header         | ❌             | ❌               |
+| Cookie         | ❌             | ❌               |
+
+## Query params serialization
+
+| style          | explode | 	URI template | Primitive value id = 5 | Array id = [3, 4, 5]  | Object id = {"role": "admin", "firstName": "Alex"} |
+|----------------|---------|---------------|------------------------|-----------------------|----------------------------------------------------|
+| form           | true    | /users{?id*}  | /users?id=5            | /users?id=3&id=4&id=5 | 	/users?role=admin&firstName=Alex                  |
+| form           | false   | /users{?id}   | /users?id=5            | 	/users?id=3,4,5      | /users?id=role,admin,firstName,Alex                |
+| spaceDelimited | true    | /users{?id*}  | n/a                    | /users?id=3&id=4&id=5 | n/a                                                |
+| spaceDelimited | false   | n/a           | n/a                    | /users?id=3%204%205   | 	n/a                                               |
+| pipeDelimited  | true    | /users{?id*}  | n/a                    | /users?id=3&id=4&id=5 | 	n/a                                               |
+| pipeDelimited  | false   | n/a           | n/a                    | /users?id=3\|4\|5     | 	n/a                                               |
+| deepObject     | true    | n/a           | n/a                    | n/a                   | 	/users?id[role]=admin&id[firstName]=Alex          |
+
+### Example of query params serialization
 
 ```php
 <?php
@@ -14,7 +36,7 @@ use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\Form;
 require 'vendor/autoload.php';
 
 // Php objects that represents params
-// Attributes are used to choose specific serialization style from openapi specification
+// Attributes are used to choose specific serialization style for arrays and object from openapi specification
 readonly class QueryObject
 {
     public function __construct(
