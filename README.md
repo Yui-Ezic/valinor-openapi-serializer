@@ -15,15 +15,17 @@ with valinor
 
 ## Query params serialization
 
-| style          | explode | 	URI template | Primitive value id = 5 | Array id = [3, 4, 5]  | Object id = {"role": "admin", "firstName": "Alex"} |
-|----------------|---------|---------------|------------------------|-----------------------|----------------------------------------------------|
-| form           | true    | /users{?id*}  | /users?id=5            | /users?id=3&id=4&id=5 | 	/users?role=admin&firstName=Alex                  |
-| form           | false   | /users{?id}   | /users?id=5            | 	/users?id=3,4,5      | /users?id=role,admin,firstName,Alex                |
-| spaceDelimited | true    | /users{?id*}  | n/a                    | /users?id=3&id=4&id=5 | n/a                                                |
-| spaceDelimited | false   | n/a           | n/a                    | /users?id=3%204%205   | 	n/a                                               |
-| pipeDelimited  | true    | /users{?id*}  | n/a                    | /users?id=3&id=4&id=5 | 	n/a                                               |
-| pipeDelimited  | false   | n/a           | n/a                    | /users?id=3\|4\|5     | 	n/a                                               |
-| deepObject     | true    | n/a           | n/a                    | n/a                   | 	/users?id[role]=admin&id[firstName]=Alex          |
+### Table of serialization methods
+
+| style          | explode | Primitive id = 5 | Array id = [3, 4, 5]  | Object id = {"role": "user", "name": "Leo"} |
+|----------------|---------|------------------|-----------------------|---------------------------------------------|
+| form           | true    | /users?id=5      | /users?id=3&id=4&id=5 | /users?role=user&name=Leo                   |
+| form           | false   | /users?id=5      | /users?id=3,4,5       | /users?id=role,user,name,Leo                |
+| spaceDelimited | true    | n/a              | /users?id=3&id=4&id=5 | n/a                                         |
+| spaceDelimited | false   | n/a              | /users?id=3%204%205   | n/a                                         |
+| pipeDelimited  | true    | n/a              | /users?id=3&id=4&id=5 | n/a                                         |
+| pipeDelimited  | false   | n/a              | /users?id=3\|4\|5     | n/a                                         |
+| deepObject     | true    | n/a              | n/a                   | /users?id[role]=user&id[name]=Leo           |
 
 ### Example of query params serialization
 
