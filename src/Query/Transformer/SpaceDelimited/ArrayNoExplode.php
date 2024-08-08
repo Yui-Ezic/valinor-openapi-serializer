@@ -18,7 +18,7 @@ use function YuiEzic\ValinorOpenapiSerializer\isArrayOfScalars;
  */
 #[AsTransformer]
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class ArrayNoExplode
+final class ArrayNoExplode
 {
     private const string ENCODED_SPACE = '%20';
 

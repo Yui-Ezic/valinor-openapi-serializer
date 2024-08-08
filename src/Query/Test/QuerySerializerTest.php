@@ -12,7 +12,7 @@ use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\Form;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\PipeDelimited;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\SpaceDelimited;
 
-class QuerySerializerTest extends TestCase
+final class QuerySerializerTest extends TestCase
 {
     public static function dataProvider(): array
     {

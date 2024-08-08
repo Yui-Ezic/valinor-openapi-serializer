@@ -48,12 +48,15 @@ namespace YuiEzic\ValinorOpenapiSerializer\Query\Transformer;
  * The second variants seems better for me, despite the implicit addition of a ExplodeValue transformer
  * necessary for proper normalization. But I'm still not sure.
  */
-class ExplodeValues
+final class ExplodeValues
 {
     // Begins with '-' because real properties can't start with it
     public const string EXPLODE_FLAG = '-explode';
 
-    /** @psalm-suppress MixedAssignment */
+    /**
+     * @psalm-suppress MixedAssignment
+     * @psalm-suppress UnusedParam
+     */
     public function __invoke(object $object, callable $next): mixed
     {
         $result = $next();

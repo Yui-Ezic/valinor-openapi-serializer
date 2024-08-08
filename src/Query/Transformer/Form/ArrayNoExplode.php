@@ -16,7 +16,7 @@ use function YuiEzic\ValinorOpenapiSerializer\isArrayOfScalars;
  */
 #[AsTransformer]
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class ArrayNoExplode
+final class ArrayNoExplode
 {
     /**
      * @param non-empty-list $array

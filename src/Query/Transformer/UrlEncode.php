@@ -7,7 +7,7 @@ use RuntimeException;
 /**
  * Encodes values for url by RFC 3986
  */
-readonly class UrlEncode
+final readonly class UrlEncode
 {
     private const string RESERVED = "/?#[]@!$&'()*+,;=";
 
@@ -18,6 +18,9 @@ readonly class UrlEncode
         private bool $allowReserved = false,
     ) {}
 
+    /**
+     * @psalm-suppress UnusedParam
+     */
     public function __invoke(string $value, callable $next): string
     {
         $result = $next();

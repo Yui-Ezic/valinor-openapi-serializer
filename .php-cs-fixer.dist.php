@@ -18,4 +18,5 @@ return (new Config())
     ->setCacheFile(__DIR__ . '/var/' . basename(__FILE__, '.dist.php') . '.cache')
     ->setRules([
         '@PER-CS2.0' => true,
+        'final_class' => true,
     ]);

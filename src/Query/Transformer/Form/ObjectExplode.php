@@ -18,7 +18,7 @@ use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\ExplodeValues;
  */
 #[AsTransformer]
 #[Attribute(Attribute::TARGET_PROPERTY)]
-readonly class ObjectExplode
+final readonly class ObjectExplode
 {
     /**
      * YuiEzic\ValinorOpenapiSerializer\QuerySerializer\Transformer\ExplodeValues search for EXPLODE_FLAG keys and explode it

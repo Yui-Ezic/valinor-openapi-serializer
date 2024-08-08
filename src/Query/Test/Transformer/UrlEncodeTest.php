@@ -9,7 +9,7 @@ use RuntimeException;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\ExplodeValues;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\UrlEncode;
 
-class UrlEncodeTest extends TestCase
+final class UrlEncodeTest extends TestCase
 {
     public function testInvalidUpstreamTransformerInChain(): void
     {

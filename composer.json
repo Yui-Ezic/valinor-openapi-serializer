@@ -38,8 +38,8 @@
     },
     "scripts": {
         "test": "phpunit --colors=always",
-        "fixcs": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -v",
-        "checkstyle": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -v --dry-run --format=checkstyle",
+        "fixcs": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -v --allow-risky=yes",
+        "checkstyle": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix -v --dry-run --format=checkstyle --allow-risky=yes",
         "psalm": "tools/psalm/vendor/bin/psalm --show-info --no-diff --no-cache"
     },
     "require-dev": {

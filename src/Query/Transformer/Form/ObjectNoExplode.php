@@ -16,8 +16,11 @@ use Stringable;
  */
 #[AsTransformer]
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class ObjectNoExplode
+final class ObjectNoExplode
 {
+    /**
+     * @psalm-suppress UnusedParam
+     */
     public function normalize(object $object, callable $next): mixed
     {
         $result = $next();

@@ -15,4 +15,4 @@ use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\AbstractArrayExplode;
  */
 #[AsTransformer]
 #[Attribute(Attribute::TARGET_PROPERTY)]
-readonly class ArrayExplode extends AbstractArrayExplode {}
+final readonly class ArrayExplode extends AbstractArrayExplode {}

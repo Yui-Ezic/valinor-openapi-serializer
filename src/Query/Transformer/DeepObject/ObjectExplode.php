@@ -18,7 +18,7 @@ use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\ExplodeValues;
  */
 #[AsTransformer]
 #[Attribute(Attribute::TARGET_PROPERTY)]
-readonly class ObjectExplode
+final readonly class ObjectExplode
 {
     public function __construct(
         private string $objectName,
@@ -34,6 +34,7 @@ readonly class ObjectExplode
 
     /**
      * @psalm-suppress MixedAssignment
+     * @psalm-suppress UnusedParam
      */
     public function normalize(object $object, callable $next): mixed
     {
