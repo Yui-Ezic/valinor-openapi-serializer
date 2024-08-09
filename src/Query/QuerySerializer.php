@@ -10,13 +10,13 @@ use CuyZ\Valinor\Normalizer\Format;
 
 use function YuiEzic\ValinorOpenapiSerializer\isArrayOfScalars;
 
-/**
- * Serializing query object to string as defined in openapi specification.
- *
- * @see https://swagger.io/docs/specification/serialization/
- */
-final readonly class QuerySerializer
+final readonly class QuerySerializer implements QuerySerializerInterface
 {
+    /**
+     * Serializing query object to string as defined in openapi specification.
+     *
+     * @see https://swagger.io/docs/specification/serialization/
+     */
     public function serialize(object $query, bool $allowReserved = false): string
     {
         $mapperBuilder = (new MapperBuilder())
