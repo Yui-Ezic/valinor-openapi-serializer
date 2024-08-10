@@ -88,12 +88,12 @@ here [(De-)Serializing null, required, and empty values ins OAS parameters #2037
 
 In short, we cannot distinguish a null value from an empty one. Look at table below:
 
-| 	                                | <no prop> | prop: null | 	prop: '' | 	prop: 'a' |
-|----------------------------------|-----------|------------|-----------|------------|
-| required=false<br>nullable=false | INVALID   | prop=      | prop=     | prop=a     |
-| required=true<br>nullable=false  |           | INVALID    | prop=     | prop=a     |
-| required=false<br>nullable=true  | INVALID   | prop=      | prop=     | prop=a     |
-| required=true<br>nullable=true   |           | INVALID    | prop=     | prop=a     |
+| 	                                | \<no prop\> | prop: null | 	prop: '' | 	prop: 'a' |
+|----------------------------------|-------------|------------|-----------|------------|
+| required=false<br>nullable=false | INVALID     | prop=      | prop=     | prop=a     |
+| required=true<br>nullable=false  |             | INVALID    | prop=     | prop=a     |
+| required=false<br>nullable=true  | INVALID     | prop=      | prop=     | prop=a     |
+| required=true<br>nullable=true   |             | INVALID    | prop=     | prop=a     |
 
 As you can see serialization of null and '' is same in some cases, and we won't be able to deserialize the value 
 unambiguously. To represent null we need to add some constraints. For example, impose a constraint on a string that it 
