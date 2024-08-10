@@ -8,7 +8,7 @@ use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\UrlEncode;
 use CuyZ\Valinor\MapperBuilder;
 use CuyZ\Valinor\Normalizer\Format;
 
-use function YuiEzic\ValinorOpenapiSerializer\isArrayOfScalars;
+use function YuiEzic\ValinorOpenapiSerializer\isArrayOfScalarsOrNulls;
 
 final readonly class QuerySerializer implements QuerySerializerInterface
 {
@@ -26,7 +26,7 @@ final readonly class QuerySerializer implements QuerySerializerInterface
 
         $array = $mapperBuilder->normalizer(Format::array())->normalize($query);
 
-        if (!is_array($array) || !isArrayOfScalars($array)) {
+        if (!is_array($array) || !isArrayOfScalarsOrNulls($array)) {
             throw new RuntimeException('Invalid query object normalization, result is not an scalar array');
         }
 
@@ -34,13 +34,14 @@ final readonly class QuerySerializer implements QuerySerializerInterface
     }
 
     /**
-     * @param scalar[] $array
+     * @param array<scalar|null> $array
      */
     private static function toQueryString(array $array): string
     {
         $arrayForImplode = [];
         foreach ($array as $key => $value) {
-            $arrayForImplode[$key] = $key . '=' . $value;
+            $stringValue = $value === null ? '' : (string) $value;
+            $arrayForImplode[$key] = $key . '=' . $stringValue;
         }
 
         return implode("&", $arrayForImplode);

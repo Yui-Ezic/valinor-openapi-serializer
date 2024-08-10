@@ -185,13 +185,13 @@ final class QuerySerializerTest extends TestCase
                 },
                 'allowReserved' => false,
                 'expected' => 'value=',
-                'skip' => true,
             ],
             'null float' => [
-                'query' => self::floatQueryObject(3.14),
+                'query' => new class (null) {
+                    public function __construct(public ?float $value) {}
+                },
                 'allowReserved' => false,
                 'expected' => 'value=',
-                'skip' => true,
             ],
             'null array, Form, explode, no allow reserved' => [
                 'query' => new class (null) {
@@ -203,7 +203,6 @@ final class QuerySerializerTest extends TestCase
                 },
                 'allowReserved' => false,
                 'expected' => 'value=',
-                'skip' => true,
             ],
             'null object, Form, no explode, no allow reserved' => [
                 'query' => new class (null) {
@@ -214,7 +213,6 @@ final class QuerySerializerTest extends TestCase
                 },
                 'allowReserved' => false,
                 'expected' => 'object=',
-                'skip' => true,
             ],
         ];
     }

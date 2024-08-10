@@ -78,3 +78,32 @@ echo $queryString . PHP_EOL;
 ```
 
 For more examples you can check [tests](src/Query/Test/QuerySerializerTest.php)
+
+### (De-)Serializing null, required, and empty values
+
+Property can be in next states: not present, null, empty value, has value.
+But [RFC 6570](https://datatracker.ietf.org/doc/html/rfc6570)
+which openapi use for serializing query parameters has no support of all this states. The problem is well described
+here [(De-)Serializing null, required, and empty values ins OAS parameters #2037](https://github.com/OAI/OpenAPI-Specification/issues/2037)
+
+In short, we cannot distinguish a null value from an empty one. Look at table below:
+
+| 	                                | <no prop> | prop: null | 	prop: '' | 	prop: 'a' |
+|----------------------------------|-----------|------------|-----------|------------|
+| required=false<br>nullable=false | INVALID   | prop=      | prop=     | prop=a     |
+| required=true<br>nullable=false  |           | INVALID    | prop=     | prop=a     |
+| required=false<br>nullable=true  | INVALID   | prop=      | prop=     | prop=a     |
+| required=true<br>nullable=true   |           | INVALID    | prop=     | prop=a     |
+
+As you can see serialization of null and '' is same in some cases, and we won't be able to deserialize the value 
+unambiguously. To represent null we need to add some constraints. For example, impose a constraint on a string that it 
+cannot be empty.
+
+I don't take on the problem with strings, but I try to support null values in cases where there is no ambiguity.
+
+#### Rules of null serializing:
+1. If property type is string than null value is not allowed. 
+2. If property type is not string (int, float, array, object) than empty string is used to represent null value (e.g 'prop=')
+3. Array cannot have null items. `[1, null, 3]` and `[1, 3]` is equals and serialized to `prop=1,3` (if style=form,
+explode=false).
+4. Objects cannot have nullable properties. `{id: 1, value:null}` is not allowed 
