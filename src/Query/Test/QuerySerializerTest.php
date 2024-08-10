@@ -175,12 +175,57 @@ final class QuerySerializerTest extends TestCase
                 'allowReserved' => false,
                 'expected' => 'object[id]=1' . '&' . 'object[value]=foo',
             ],
+
+            // Serializing null values.
+            // Null value of non-sting types serialized to empty string.
+            // Null value of string type is not serializable.
+            'null int' => [
+                'query' => new class (null) {
+                    public function __construct(public ?int $value) {}
+                },
+                'allowReserved' => false,
+                'expected' => 'value=',
+                'skip' => true,
+            ],
+            'null float' => [
+                'query' => self::floatQueryObject(3.14),
+                'allowReserved' => false,
+                'expected' => 'value=',
+                'skip' => true,
+            ],
+            'null array, Form, explode, no allow reserved' => [
+                'query' => new class (null) {
+                    public function __construct(
+                        /** @var list<string>|null */
+                        #[Form\ArrayExplode('value')]
+                        public ?array $value,
+                    ) {}
+                },
+                'allowReserved' => false,
+                'expected' => 'value=',
+                'skip' => true,
+            ],
+            'null object, Form, no explode, no allow reserved' => [
+                'query' => new class (null) {
+                    public function __construct(
+                        #[Form\ObjectNoExplode]
+                        public ?NestedObject $object,
+                    ) {}
+                },
+                'allowReserved' => false,
+                'expected' => 'object=',
+                'skip' => true,
+            ],
         ];
     }
 
     #[DataProvider('dataProvider')]
-    public function testSerialize(object $query, bool $allowReserved, string $expected): void
+    public function testSerialize(object $query, bool $allowReserved, string $expected, bool $skip = false): void
     {
+        if ($skip) {
+            $this->markTestSkipped();
+        }
+
         $actual = (new QuerySerializer())->serialize(
             query: $query,
             allowReserved: $allowReserved,
