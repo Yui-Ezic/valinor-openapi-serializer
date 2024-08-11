@@ -38,7 +38,7 @@ use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\Form;
 require 'vendor/autoload.php';
 
 // Php objects that represents params
-// Attributes are used to choose specific serialization style for arrays and object from openapi specification
+// Attributes are used to choose serialization style for arrays and object from openapi specification
 readonly class QueryObject
 {
     public function __construct(
@@ -90,20 +90,22 @@ In short, we cannot distinguish a null value from an empty one. Look at table be
 
 | 	                                | \<no prop\> | prop: null | 	prop: '' | 	prop: 'a' |
 |----------------------------------|-------------|------------|-----------|------------|
-| required=false<br>nullable=false | INVALID     | prop=      | prop=     | prop=a     |
+| required=false<br>nullable=false | INVALID     | INVALID    | prop=     | prop=a     |
 | required=true<br>nullable=false  |             | INVALID    | prop=     | prop=a     |
 | required=false<br>nullable=true  | INVALID     | prop=      | prop=     | prop=a     |
-| required=true<br>nullable=true   |             | INVALID    | prop=     | prop=a     |
+| required=true<br>nullable=true   |             | prop=      | prop=     | prop=a     |
 
-As you can see serialization of null and '' is same in some cases, and we won't be able to deserialize the value 
-unambiguously. To represent null we need to add some constraints. For example, impose a constraint on a string that it 
+As you can see serialization of null and '' is same in some cases, and we won't be able to deserialize the value
+unambiguously. To represent null we need to add some constraints. For example, impose a constraint on a string that it
 cannot be empty.
 
 I don't take on the problem with strings, but I try to support null values in cases where there is no ambiguity.
 
 #### Rules of null serializing:
-1. If property type is string than null value is not allowed. 
-2. If property type is not string (int, float, array, object) than empty string is used to represent null value (e.g 'prop=')
+
+1. If property type is string than null value is not allowed.
+2. If property type is not string (int, float, array, object) than empty string is used to represent null value (e.g '
+   prop=')
 3. Array cannot have null items. `[1, null, 3]` and `[1, 3]` is equals and serialized to `prop=1,3` (if style=form,
-explode=false).
+   explode=false).
 4. Objects cannot have nullable properties. `{id: 1, value:null}` is not allowed 
