@@ -77,6 +77,35 @@ $queryString = (new QuerySerializer())->serialize(
 echo $queryString . PHP_EOL;
 ```
 
+### Not existent (optional) fields
+
+```php
+<?php
+
+use YuiEzic\ValinorOpenapiSerializer\None;
+use YuiEzic\ValinorOpenapiSerializer\Query\QuerySerializer;
+use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\Form;
+
+require 'vendor/autoload.php';
+
+// You can use to None::class to represent absence of property (field)
+readonly class QueryObject
+{
+    public function __construct(
+        public int|None $foo,
+        public int|null $bar
+    ) {}
+}
+
+// Serialize php object to query string
+$queryString = (new QuerySerializer())->serialize(
+    query: new QueryObject(foo: new None(), bar: null)
+);
+
+// bar=
+echo $queryString . PHP_EOL;
+```
+
 For more examples you can check [tests](src/Query/Test/QuerySerializerTest.php)
 
 ### (De-)Serializing null, required, and empty values

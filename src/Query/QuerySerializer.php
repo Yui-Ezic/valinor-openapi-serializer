@@ -3,7 +3,10 @@
 namespace YuiEzic\ValinorOpenapiSerializer\Query;
 
 use RuntimeException;
+use YuiEzic\ValinorOpenapiSerializer\None;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\ExplodeValues;
+use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\PreserveNoneObject;
+use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\RemoveNoneValues;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\UrlEncode;
 use CuyZ\Valinor\MapperBuilder;
 use CuyZ\Valinor\Normalizer\Format;
@@ -19,7 +22,15 @@ final readonly class QuerySerializer implements QuerySerializerInterface
      */
     public function serialize(object $query, bool $allowReserved = false): string
     {
+        /**
+         * @psalm-suppress InvalidArgument
+         * MapperBuilder::registerTransformer expects pure-callable as transformer.
+         * But I didn't figure out how to make transformer classes pure-
+         * https://github.com/CuyZ/Valinor/issues/550
+         */
         $mapperBuilder = (new MapperBuilder())
+            ->registerTransformer(new PreserveNoneObject())
+            ->registerTransformer(new RemoveNoneValues())
             ->registerTransformer(new UrlEncode($allowReserved))
             // For ObjectExplode attribute
             ->registerTransformer(new ExplodeValues());

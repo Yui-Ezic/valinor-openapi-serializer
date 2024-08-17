@@ -6,6 +6,7 @@ namespace YuiEzic\ValinorOpenapiSerializer\Query\Test;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use YuiEzic\ValinorOpenapiSerializer\None;
 use YuiEzic\ValinorOpenapiSerializer\Query\QuerySerializer;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\DeepObject\ObjectExplode;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\Form;
@@ -213,6 +214,56 @@ final class QuerySerializerTest extends TestCase
                 },
                 'allowReserved' => false,
                 'expected' => 'object=',
+            ],
+
+            // Optional values
+            'none string value' => [
+                'query' => new readonly class (new None()) {
+                    public function __construct(
+                        public None|string $value,
+                    ) {}
+                },
+                'allowReserved' => false,
+                'expected' => '',
+            ],
+            'none int value' => [
+                'query' => new readonly class (new None()) {
+                    public function __construct(
+                        public None|int $value,
+                    ) {}
+                },
+                'allowReserved' => false,
+                'expected' => '',
+            ],
+            'none float value' => [
+                'query' => new readonly class (new None()) {
+                    public function __construct(
+                        public None|float $value,
+                    ) {}
+                },
+                'allowReserved' => false,
+                'expected' => '',
+            ],
+            'none array value' => [
+                'query' => new readonly class (new None()) {
+                    public function __construct(
+                        /** @var None|list<string> */
+                        #[Form\ArrayNoExplode()]
+                        public None|array $value,
+                    ) {}
+                },
+                'allowReserved' => false,
+                'expected' => '',
+            ],
+            'none object value' => [
+                'query' => new class (new None()) {
+                    public function __construct(
+                        #[Form\ObjectExplode]
+                        public None|NestedObject $object,
+                    ) {}
+                },
+                'allowReserved' => false,
+                'expected' => '',
             ],
         ];
     }
