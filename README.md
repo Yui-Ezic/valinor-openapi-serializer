@@ -135,6 +135,5 @@ I don't take on the problem with strings, but I try to support null values in ca
 1. If property type is string than null value is not allowed.
 2. If property type is not string (int, float, array, object) than empty string is used to represent null value (e.g '
    prop=')
-3. Array cannot have null items. `[1, null, 3]` and `[1, 3]` is equals and serialized to `prop=1,3` (if style=form,
-   explode=false).
+3. Array should not have null items. Because we can't tell whether `prop=1,3` is `[1, null, 3]` or `[1, 3]`.
 4. Objects cannot have nullable properties. `{id: 1, value:null}` is not allowed 
