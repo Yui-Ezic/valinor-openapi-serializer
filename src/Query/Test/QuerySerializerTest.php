@@ -8,7 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use YuiEzic\ValinorOpenapiSerializer\None;
 use YuiEzic\ValinorOpenapiSerializer\Query\QuerySerializer;
-use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\DeepObject\ObjectExplode;
+use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\DeepObject;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\Form;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\PipeDelimited;
 use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\SpaceDelimited;
@@ -169,7 +169,7 @@ final class QuerySerializerTest extends TestCase
             'object, DeepObject, explode, no allow reserved' => [
                 'query' => new class (new NestedObject(id: 1, value: 'foo')) {
                     public function __construct(
-                        #[ObjectExplode(objectName: 'object')]
+                        #[DeepObject\ObjectExplode(objectName: 'object')]
                         public NestedObject $object,
                     ) {}
                 },
