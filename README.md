@@ -88,7 +88,7 @@ use YuiEzic\ValinorOpenapiSerializer\Query\Transformer\Form;
 
 require 'vendor/autoload.php';
 
-// You can use to None::class to represent absence of property (field)
+// You can use the None::class to represent absence of property (field)
 readonly class QueryObject
 {
     public function __construct(
