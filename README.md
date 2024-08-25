@@ -1,8 +1,10 @@
 # Valinor openapi serializer
 
-Serialize/Deserialize parameters from/to objects
+Serialize/Deserialize openapi parameters from/to objects
 by [openapi specification](https://swagger.io/docs/specification/serialization/)
 with valinor
+
+![Serializer schema](docs/img/serializer-schema.png)
 
 ## Implemented features
 
